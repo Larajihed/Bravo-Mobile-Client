@@ -1,19 +1,4 @@
-/**
-  TODO:
 
-  [x] Clone the mcrn-expo-easy-starter project.
-  [x] Rename the project.
-  [x] Install dependencies
-  [x] Start the app (yarn ios)
-  [x] Study the UI Design and prepare the Fonts, Images, Colors, Dummy data.
-  [x] Bottom tabs navigation (4 screens)
-  [x] Discover Screen
-      [x] Header Section
-      [x] Banner Section
-      [x] Teams Section
-      [x] Matches Section
-      [x] News Section
- */
  
 import React from 'react';
 import { StatusBar, View, FlatList, ScrollView } from 'react-native';
@@ -79,7 +64,76 @@ const _renderMatchesItem = ({ item, index }) => {
       <McText bold size={10}>
         {item.team2.name}
       </McText>
+
     </MatchItemBox>
+  );
+};
+
+const _renderHorizentalMatchesItem = ({ item, index, navigation }) => {
+  return (
+    <TouchableOpacity onPress={() => navigation.navigate('MatchDetail', { matchId: item.id })}>
+
+    <MatchItemBox
+      style={{
+        marginLeft:8,
+        marginRight:8,
+        width:'95%',
+        height:60,
+        backgroundColor:'#252836'
+      }}
+    >
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems:'center',
+          width:'100%',
+          justifyContent:'space-between',
+          paddingHorizontal:32
+        }}
+      >
+        <View
+        style={{flexDirection:'row', alignItems:'center', 
+      }}
+        >
+        <MediumTeamLogo source={item.team1.logo} />
+        <McText bold size={10} style={{  }}>
+        {item.team1.name}
+      </McText>
+      
+
+        </View>
+ 
+        <View
+        style={{
+          alignSelf: 'center',
+          padding: 6,
+          backgroundColor: 'white',
+          borderRadius: 30,
+        }}
+      >
+        <McText bold size={9} color="#2648D1">
+          17:00
+        </McText>
+      </View>
+        
+      <View
+        style={{flexDirection:'row',          alignItems:'center',
+      }}
+        >
+        <MediumTeamLogo source={item.team2.logo} />
+        
+      <McText bold size={10}>
+        {item.team2.name}
+      </McText>
+        </View>
+        
+      </View>
+
+
+    </MatchItemBox>
+    </TouchableOpacity>
+
   );
 };
 
@@ -109,9 +163,12 @@ const Discover = ({ navigation }) => (
     <ScrollView contentContainerStyle={{}} style={{}}>
     <StatusBar hidden={true} />
     {/* Header Section */}
-    <HeaderSection>
+    <HeaderSection  style={{
+          flexDirection: 'row',
+        }}>
+    <McImage source={Images.Search} style={{ marginRight: 20 }} />
       <McText semi size={30} style={{ lineHeight: 35 }}>
-        Discover
+        Welcome Back
       </McText>
       <View
         style={{
@@ -119,8 +176,7 @@ const Discover = ({ navigation }) => (
           justifyContent: 'space-between',
         }}
       >
-        <McImage source={Images.Search} style={{ marginRight: 20 }} />
-        <McImage source={Images.Notification} />
+         <McImage source={Images.Notification} />
         <View
           style={{
             width: 10,
@@ -193,7 +249,7 @@ const Discover = ({ navigation }) => (
               fontFamily: 'Inter-SemiBold',
             }}
           >
-            Zidane and Real Madrid: Where it went wrong and what's next
+            Check out our website to manage your football tournament !
           </McText>
           <McText
             size={12}
@@ -211,7 +267,9 @@ const Discover = ({ navigation }) => (
           justifyContent: 'flex-end',
         }}
       >
+       {/*
         <McImage source={require('Assets/images/Zidane.png')} />
+      */}
       </View>
     </BannerSection>
     {/* Teams Section */}
@@ -251,6 +309,23 @@ const Discover = ({ navigation }) => (
         data={dummyData.Matches}
         renderItem={_renderMatchesItem}
       ></FlatList>
+    </View>
+
+    <Header2Section>
+      <McText semi size={18}>
+        Upcoming Matches
+      </McText>
+
+    </Header2Section>
+    <View>
+      <FlatList
+        keyExtractor={(item) => '_match' + item.id}
+        vertical
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{}}
+        data={dummyData.Matches}
+        renderItem={({ item, index }) => _renderHorizentalMatchesItem({ item, index, navigation })}
+        ></FlatList>
     </View>
     {/* News Section */}
     <Header2Section>
@@ -331,6 +406,17 @@ const BigTeamLogo = styled.Image`
   height: 55px;
 `;
 const MatchItemBox = styled.View`
+  width: 112px;
+  height: 156px;
+  border-radius: 10px;
+  background-color: #222232;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  background-color: ${(props) => Colors.blue};
+`;
+
+const HorizentalMatchItemBox = styled.View`
   width: 112px;
   height: 156px;
   border-radius: 10px;
